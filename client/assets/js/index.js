@@ -223,3 +223,370 @@ regenerateResponseButton.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", function(){
     promptInput.focus();
 });
+
+
+
+const schoolButton  = document.getElementById('school-button');
+
+schoolButton .addEventListener("click", () => {
+    getGPTResult("Tell me about school");
+});
+
+
+async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
+    if (modelSelect.value === 'whisper') {
+        await getWhisperResult();
+        return;
+    }
+    
+    const prompt = _promptToRetry ?? promptInput.textContent;
+
+    if (isGeneratingResponse || !prompt) {
+        return;
+    }
+
+    submitButton.classList.add("loading");
+    promptInput.textContent = '';
+
+    if (!_uniqueIdToRetry) {
+        addResponse(true, `<div>${prompt}</div>`);
+    }
+
+    const uniqueId = _uniqueIdToRetry ?? addResponse(false);
+    const responseElement = document.getElementById(uniqueId);
+    loader(responseElement);
+    isGeneratingResponse = true;
+
+    try {
+        const model = modelSelect.value;
+        const response = await fetch(API_URL + 'get-prompt-result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt,
+                model
+            })
+        });
+
+        if (!response.ok) {
+            setRetryResponse(prompt, uniqueId);
+            setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+            return;
+        }
+
+        const responseText = await response.text();
+        if (model === 'image') {
+            responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
+        } else {
+            responseElement.innerHTML = converter.makeHtml(responseText.trim());
+        }
+
+        promptToRetry = null;
+        uniqueIdToRetry = null;
+        regenerateResponseButton.style.display = 'none';
+        setTimeout(() => {
+            responseList.scrollTop = responseList.scrollHeight;
+            hljs.highlightAll();
+        }, 10);
+    } catch (err) {
+        setRetryResponse(prompt, uniqueId);
+        setErrorForResponse(responseElement, `Error: ${err.message}`);
+    } finally {
+        isGeneratingResponse = false;
+        submitButton.classList.remove("loading");
+        clearInterval(loadInterval);
+    }
+}
+
+
+const TechnicalButton  = document.getElementById('technical-button');
+
+TechnicalButton .addEventListener("click", () => {
+    getGPTResult("what is java");
+});
+
+
+async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
+    if (modelSelect.value === 'whisper') {
+        await getWhisperResult();
+        return;
+    }
+    
+    const prompt = _promptToRetry ?? promptInput.textContent;
+
+    if (isGeneratingResponse || !prompt) {
+        return;
+    }
+
+    submitButton.classList.add("loading");
+    promptInput.textContent = '';
+
+    if (!_uniqueIdToRetry) {
+        addResponse(true, `<div>${prompt}</div>`);
+    }
+
+    const uniqueId = _uniqueIdToRetry ?? addResponse(false);
+    const responseElement = document.getElementById(uniqueId);
+    loader(responseElement);
+    isGeneratingResponse = true;
+
+    try {
+        const model = modelSelect.value;
+        const response = await fetch(API_URL + 'get-prompt-result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt,
+                model
+            })
+        });
+
+        if (!response.ok) {
+            setRetryResponse(prompt, uniqueId);
+            setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+            return;
+        }
+
+        const responseText = await response.text();
+        if (model === 'image') {
+            responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
+        } else {
+            responseElement.innerHTML = converter.makeHtml(responseText.trim());
+        }
+
+        promptToRetry = null;
+        uniqueIdToRetry = null;
+        regenerateResponseButton.style.display = 'none';
+        setTimeout(() => {
+            responseList.scrollTop = responseList.scrollHeight;
+            hljs.highlightAll();
+        }, 10);
+    } catch (err) {
+        setRetryResponse(prompt, uniqueId);
+        setErrorForResponse(responseElement, `Error: ${err.message}`);
+    } finally {
+        isGeneratingResponse = false;
+        submitButton.classList.remove("loading");
+        clearInterval(loadInterval);
+    }
+}
+
+
+
+const banksButton  = document.getElementById('banks-button');
+
+banksButton .addEventListener("click", () => {
+    getGPTResult("Tell me about banks");
+});
+
+
+async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
+    if (modelSelect.value === 'whisper') {
+        await getWhisperResult();
+        return;
+    }
+    
+    const prompt = _promptToRetry ?? promptInput.textContent;
+
+    if (isGeneratingResponse || !prompt) {
+        return;
+    }
+
+    submitButton.classList.add("loading");
+    promptInput.textContent = '';
+
+    if (!_uniqueIdToRetry) {
+        addResponse(true, `<div>${prompt}</div>`);
+    }
+
+    const uniqueId = _uniqueIdToRetry ?? addResponse(false);
+    const responseElement = document.getElementById(uniqueId);
+    loader(responseElement);
+    isGeneratingResponse = true;
+
+    try {
+        const model = modelSelect.value;
+        const response = await fetch(API_URL + 'get-prompt-result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt,
+                model
+            })
+        });
+
+        if (!response.ok) {
+            setRetryResponse(prompt, uniqueId);
+            setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+            return;
+        }
+
+        const responseText = await response.text();
+        if (model === 'image') {
+            responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
+        } else {
+            responseElement.innerHTML = converter.makeHtml(responseText.trim());
+        }
+
+        promptToRetry = null;
+        uniqueIdToRetry = null;
+        regenerateResponseButton.style.display = 'none';
+        setTimeout(() => {
+            responseList.scrollTop = responseList.scrollHeight;
+            hljs.highlightAll();
+        }, 10);
+    } catch (err) {
+        setRetryResponse(prompt, uniqueId);
+        setErrorForResponse(responseElement, `Error: ${err.message}`);
+    } finally {
+        isGeneratingResponse = false;
+        submitButton.classList.remove("loading");
+        clearInterval(loadInterval);
+    }
+}
+
+
+const governmentButton  = document.getElementById('government-button');
+
+governmentButton .addEventListener("click", () => {
+    getGPTResult("Tell me about government");
+});
+
+
+async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
+    if (modelSelect.value === 'whisper') {
+        await getWhisperResult();
+        return;
+    }
+    
+    const prompt = _promptToRetry ?? promptInput.textContent;
+
+    if (isGeneratingResponse || !prompt) {
+        return;
+    }
+
+    submitButton.classList.add("loading");
+    promptInput.textContent = '';
+
+    if (!_uniqueIdToRetry) {
+        addResponse(true, `<div>${prompt}</div>`);
+    }
+
+    const uniqueId = _uniqueIdToRetry ?? addResponse(false);
+    const responseElement = document.getElementById(uniqueId);
+    loader(responseElement);
+    isGeneratingResponse = true;
+
+    try {
+        const model = modelSelect.value;
+        const response = await fetch(API_URL + 'get-prompt-result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt,
+                model
+            })
+        });
+
+        if (!response.ok) {
+            setRetryResponse(prompt, uniqueId);
+            setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+            return;
+        }
+
+        const responseText = await response.text();
+        if (model === 'image') {
+            responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
+        } else {
+            responseElement.innerHTML = converter.makeHtml(responseText.trim());
+        }
+
+        promptToRetry = null;
+        uniqueIdToRetry = null;
+        regenerateResponseButton.style.display = 'none';
+        setTimeout(() => {
+            responseList.scrollTop = responseList.scrollHeight;
+            hljs.highlightAll();
+        }, 10);
+    } catch (err) {
+        setRetryResponse(prompt, uniqueId);
+        setErrorForResponse(responseElement, `Error: ${err.message}`);
+    } finally {
+        isGeneratingResponse = false;
+        submitButton.classList.remove("loading");
+        clearInterval(loadInterval);
+    }
+}
+
+
+const templesButton  = document.getElementById('temples-button');
+
+templesButton .addEventListener("click", () => {
+    getGPTResult(" temples in india");
+});
+
+
+async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
+    if (modelSelect.value === 'whisper') {
+        await getWhisperResult();
+        return;
+    }
+    
+    const prompt = _promptToRetry ?? promptInput.textContent;
+
+    if (isGeneratingResponse || !prompt) {
+        return;
+    }
+
+    submitButton.classList.add("loading");
+    promptInput.textContent = '';
+
+    if (!_uniqueIdToRetry) {
+        addResponse(true, `<div>${prompt}</div>`);
+    }
+
+    const uniqueId = _uniqueIdToRetry ?? addResponse(false);
+    const responseElement = document.getElementById(uniqueId);
+    loader(responseElement);
+    isGeneratingResponse = true;
+
+    try {
+        const model = modelSelect.value;
+        const response = await fetch(API_URL + 'get-prompt-result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt,
+                model
+            })
+        });
+
+        if (!response.ok) {
+            setRetryResponse(prompt, uniqueId);
+            setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+            return;
+        }
+
+        const responseText = await response.text();
+        if (model === 'image') {
+            responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
+        } else {
+            responseElement.innerHTML = converter.makeHtml(responseText.trim());
+        }
+
+        promptToRetry = null;
+        uniqueIdToRetry = null;
+        regenerateResponseButton.style.display = 'none';
+        setTimeout(() => {
+            responseList.scrollTop = responseList.scrollHeight;
+            hljs.highlightAll();
+        }, 10);
+    } catch (err) {
+        setRetryResponse(prompt, uniqueId);
+        setErrorForResponse(responseElement, `Error: ${err.message}`);
+    } finally {
+        isGeneratingResponse = false;
+        submitButton.classList.remove("loading");
+        clearInterval(loadInterval);
+    }
+}

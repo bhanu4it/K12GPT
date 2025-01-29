@@ -1,7 +1,7 @@
 html, body {
     height: 100%;
 }
-/* Add background color to the body */
+
 body {
     background-color: rgba(68, 70, 84, 1.0);
     display: flex;
@@ -15,14 +15,12 @@ select {
     text-overflow: ellipsis;
 }
 
-/* Remove border color from the response list container */
 #response-list {
     border: none;
     overflow-y: auto;
     flex: 1;
 }
 
-/* Style for each response element in the list */
 #response-list .response-container {
     margin-bottom: 10px;
     color: white;
@@ -31,8 +29,43 @@ select {
     word-break: break-word;
 }
 
-#response-list .response-container, #bottom-container {
+#response-list .response-container, #right-container {
     padding: 15px 10%;
+    margin-left: 60px;
+}
+
+#technical-button {
+    background-color:white; 
+    color: black; 
+    border: none;
+    border-radius: 8px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+
+#technical-button:hover {
+    background-color: whitesmoke; 
+    transform: scale(1.05); 
+}
+
+
+#technical-button:active {
+    background-color: whitesmoke;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    transform: scale(0.98); 
+}
+
+
+#technical-button:focus {
+    outline: 2px solid gray; 
+    outline-offset: 2px; 
 }
 
 @media (pointer:none), (pointer:coarse) {
@@ -85,7 +118,6 @@ select {
 .my-question {
     background-color: rgba(52, 53, 65, 1);
 }
-/* Change background color of the input container */
 #input-container {
     display: flex;
     align-items: center;
@@ -97,7 +129,6 @@ select {
     margin-top: 10px;
 }
 
-/* Style for the prompt input */
 #prompt-input {
     flex-grow: 1;
     padding: 10px;
@@ -111,7 +142,6 @@ select {
     outline: none !important;
 }
 
-/* Remove background color and add an SVG background for the submit button */
 #submit-button {
     background: transparent url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='white' d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/></svg>") no-repeat center center;
     color: white;
@@ -169,7 +199,6 @@ select {
     height: auto;
 }
 
-/* Override hljs to match for chatgpt */
 .hljs {
     background: rgb(0,0,0) !important;
     color: white !important;

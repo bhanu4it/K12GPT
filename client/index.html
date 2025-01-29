@@ -11,15 +11,19 @@
     />
 </head>
 <body>
+
 <div id="response-list">
+
+    <ul id="technical-data"></ul>
 </div>
-<div id="bottom-container">
+
+<div id="right-container">
     <div id="regenerate-button-container">
         <button id="regenerate-response-button">
             Regenerate Response
         </button>
     </div>
-    <div id="model-select-container">
+    <div id="model-select-container" >
         <label for="model-select">Select model:</label>
         <select id="model-select">
             <option value="chatgpt" selected>ChatGPT (Improved version of GPT-3 and can understand as well as generate natural language or code)</option>
@@ -33,7 +37,15 @@
         <div id="prompt-input" contentEditable></div>
         <button id="submit-button"></button>
     </div>
+
+
+    <button id="technical-button">Technical</button>
+<button id="school-button">schools</button>
+<button id="banks-button">banks</button>
+<button id="government-button">government</button>
+<button id="temples-button">temples</button>
 </div>
+
 <script src="./assets/js/highlight.min.js"></script>
 <script src="./assets/js/showdown.min.js"></script>
 <script src="./assets/js/index.js"></script>
