@@ -4,6 +4,11 @@ const app = express();
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const bodyParser = require('body-parser');
+const authRoutes = require('./routes/authRoutes');
+const db = require('./config/db');
+
+
 const multer  = require('multer');
 const { v4: uuidv4 } = require('uuid');
 require("dotenv").config();
@@ -13,7 +18,25 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 app.use(cors());
+// app.use(cors(   {
+//     origin: 'http://localhost:5501',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+// }));
+ 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // Allow all origins (unsafe for production)
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+  });
+
 app.use(express.json());
+
+app.use(bodyParser.json());
+app.use('/auth', authRoutes);
+
+
 app.use('/', express.static(__dirname + '/client')); // Serves resources from client folder
 
 // Set up Multer to handle file uploads
@@ -101,8 +124,6 @@ app.post('/get-prompt-result', async (req, res) => {
         return res.status(500).send(errorMsg);
     }
 });
-
-
 
 
 

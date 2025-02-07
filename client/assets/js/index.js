@@ -224,79 +224,144 @@ document.addEventListener("DOMContentLoaded", function(){
     promptInput.focus();
 });
 
+const schoolButton = document.getElementById("school-button");
+const inputContainer = document.getElementById("input-container");
 
+schoolButton.addEventListener("click", () => {
+    inputContainer.innerHTML = `
+        <form id="school-form">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+            
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            
+            <label for="class">Class:</label>
+            <input type="text" id="class" name="class" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+    `;
 
-const schoolButton  = document.getElementById('school-button');
+    document.getElementById("school-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-schoolButton .addEventListener("click", () => {
-    getGPTResult("Tell me about school");
+        const age = document.getElementById("age").value;
+        const gender = document.getElementById("gender").value;
+        const studentClass = document.getElementById("class").value;
+
+        const prompt = `Provide information about education, curriculum, and opportunities suitable for a ${age}-year-old ${gender} student in class ${studentClass}.`;
+
+        getGPTResult(prompt);
+    });
 });
 
-
-async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
-    if (modelSelect.value === 'whisper') {
-        await getWhisperResult();
-        return;
-    }
-    
-    const prompt = _promptToRetry ?? promptInput.textContent;
-
-    if (isGeneratingResponse || !prompt) {
-        return;
-    }
-
-    submitButton.classList.add("loading");
-    promptInput.textContent = '';
-
-    if (!_uniqueIdToRetry) {
-        addResponse(true, `<div>${prompt}</div>`);
-    }
-
-    const uniqueId = _uniqueIdToRetry ?? addResponse(false);
-    const responseElement = document.getElementById(uniqueId);
-    loader(responseElement);
-    isGeneratingResponse = true;
+async function getGPTResult(prompt) {
+    const responseElement = document.createElement("div");
+    responseElement.classList.add("chatgpt-response");
+    responseElement.textContent = "Loading...";
+    document.getElementById("response-list").appendChild(responseElement);
 
     try {
-        const model = modelSelect.value;
-        const response = await fetch(API_URL + 'get-prompt-result', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                prompt,
-                model
-            })
+        const response = await fetch("/get-prompt-result", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt, model: "chatgpt" })
         });
 
         if (!response.ok) {
-            setRetryResponse(prompt, uniqueId);
-            setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+            responseElement.textContent = `Error: ${await response.text()}`;
             return;
         }
 
         const responseText = await response.text();
-        if (model === 'image') {
-            responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
-        } else {
-            responseElement.innerHTML = converter.makeHtml(responseText.trim());
-        }
-
-        promptToRetry = null;
-        uniqueIdToRetry = null;
-        regenerateResponseButton.style.display = 'none';
-        setTimeout(() => {
-            responseList.scrollTop = responseList.scrollHeight;
-            hljs.highlightAll();
-        }, 10);
+        responseElement.innerHTML = converter.makeHtml(responseText.trim());
     } catch (err) {
-        setRetryResponse(prompt, uniqueId);
-        setErrorForResponse(responseElement, `Error: ${err.message}`);
-    } finally {
-        isGeneratingResponse = false;
-        submitButton.classList.remove("loading");
-        clearInterval(loadInterval);
+        responseElement.textContent = `Error: ${err.message}`;
     }
 }
+
+
+
+
+// const schoolButton  = document.getElementById('school-button');
+
+// schoolButton .addEventListener("click", () => {
+//     getGPTResult("Tell me about school");
+// });
+
+
+// async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
+//     if (modelSelect.value === 'whisper') {
+//         await getWhisperResult();
+//         return;
+//     }
+    
+//     const prompt = _promptToRetry ?? promptInput.textContent;
+
+//     if (isGeneratingResponse || !prompt) {
+//         return;
+//     }
+
+//     submitButton.classList.add("loading");
+//     promptInput.textContent = '';
+
+//     if (!_uniqueIdToRetry) {
+//         addResponse(true, `<div>${prompt}</div>`);
+//     }
+
+//     const uniqueId = _uniqueIdToRetry ?? addResponse(false);
+//     const responseElement = document.getElementById(uniqueId);
+//     loader(responseElement);
+//     isGeneratingResponse = true;
+
+//     try {
+//         const model = modelSelect.value;
+//         const response = await fetch(API_URL + 'get-prompt-result', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({
+//                 prompt,
+//                 model
+//             })
+//         });
+
+//         if (!response.ok) {
+//             setRetryResponse(prompt, uniqueId);
+//             setErrorForResponse(responseElement, `HTTP Error: ${await response.text()}`);
+//             return;
+//         }
+
+//         const responseText = await response.text();
+//         if (model === 'image') {
+//             responseElement.innerHTML = `<img src="${responseText}" class="ai-image" alt="generated image"/>`
+//         } else {
+//             responseElement.innerHTML = converter.makeHtml(responseText.trim());
+//         }
+
+//         promptToRetry = null;
+//         uniqueIdToRetry = null;
+//         regenerateResponseButton.style.display = 'none';
+//         setTimeout(() => {
+//             responseList.scrollTop = responseList.scrollHeight;
+//             hljs.highlightAll();
+//         }, 10);
+//     } catch (err) {
+//         setRetryResponse(prompt, uniqueId);
+//         setErrorForResponse(responseElement, `Error: ${err.message}`);
+//     } finally {
+//         isGeneratingResponse = false;
+//         submitButton.classList.remove("loading");
+//         clearInterval(loadInterval);
+//     }
+// }
+
+
+// Handle "schools" button click event
 
 
 const TechnicalButton  = document.getElementById('technical-button');
@@ -590,3 +655,23 @@ async function getGPTResult(_promptToRetry, _uniqueIdToRetry) {
         clearInterval(loadInterval);
     }
 }
+const workingCheckbox = document.getElementById("working");
+        const workingDetails = document.getElementById("working-details");
+        const closeModal = document.querySelector(".close-btn");
+        const modal = document.getElementById("signup-modal");
+
+        workingCheckbox.addEventListener("change", () => {
+            workingDetails.classList.toggle("hidden", !workingCheckbox.checked);
+        });
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+ 
+
+  
+
+        
+
+
+
